@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RPM Automotive | احجز خدمتك الآن</title>
+<style>
+  :root{
+    --bg:#0a0c10;
+    --surface:#13161c;
+    --surface-2:#1a1e26;
+    --line:#262b35;
+    --text:#eef0f3;
+    --muted:#8a93a3;
+    --red:#e0263a;
+    --red-dim:#7a1420;
+    --blue:#1e6fd0;
+    --blue-dim:#11355f;
+    --silver:#c7ccd1;
+    --lime:#aed336;
+    --lime-dim:#3a4512;
+    --gold:#e0972e;
+    --gold-dim:#5c3c10;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:Tahoma, 'Segoe UI', Arial, sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  .haze{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 90%, rgba(224,38,58,0.10), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 10% 10%, rgba(30,111,208,0.10), transparent 60%);
+  }
+  .grain{
+    position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap{
+    position:relative;
+    z-index:2;
+    max-width:1100px;
+    margin:0 auto;
+    padding:48px 24px 80px;
+  }
+
+  .hero{
+    text-align:center;
+    padding:24px 0 36px;
+  }
+
+  .gauge-rule{
+    width:220px;
+    height:2px;
+    margin:18px auto 28px;
+    position:relative;
+    background:linear-gradient(90deg, var(--blue), var(--red));
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .gauge-rule::after{
+    content:'';
+    position:absolute;
+    top:0;left:-40%;
+    width:30%;height:100%;
+    background:rgba(255,255,255,.9);
+    filter:blur(4px);
+    animation:sweep 2.6s ease-in-out 0.3s 1;
+  }
+  @keyframes sweep{
+    0%{left:-40%;}
+    100%{left:120%;}
+  }
+
+  h1.headline{
+    font-weight:800;
+    font-size:clamp(2.2rem, 6.5vw, 3.8rem);
+    letter-spacing:-0.01em;
+    line-height:1.15;
+    background:linear-gradient(95deg, var(--text) 35%, var(--silver) 60%, var(--text) 85%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    animation:fadeUp .8s ease both;
+  }
+  .sub{
+    margin-top:14px;
+    font-size:clamp(1rem, 2.4vw, 1.2rem);
+    color:var(--muted);
+    max-width:600px;
+    margin-inline:auto;
+    line-height:1.85;
+    animation:fadeUp .8s ease .1s both;
+  }
+  .sub b{color:var(--text);font-weight:700;}
+
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(14px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  .trust{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    flex-wrap:wrap;
+    margin:34px 0 8px;
+  }
+  .pill{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:var(--silver);
+    font-size:.88rem;
+    font-weight:600;
+    background:var(--surface);
+    border:1px solid var(--line);
+    padding:9px 16px;
+    border-radius:999px;
+  }
+  .dot{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--red);
+    box-shadow:0 0 8px var(--red);
+    flex-shrink:0;
+  }
+
+  .card{
+    margin:48px auto 0;
+    max-width:560px;
+    background:linear-gradient(180deg, var(--surface), var(--surface-2));
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:38px 32px 32px;
+    position:relative;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.6);
+  }
+  .card::before{
+    content:'';
+    position:absolute;
+    top:-1px;left:14%;right:14%;
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--blue), var(--red), transparent);
+  }
+  .card h2{
+    font-size:1.5rem;
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  .card p.note{
+    color:var(--muted);
+    font-size:.92rem;
+    margin-bottom:26px;
+  }
+
+  .field{
+    margin-bottom:18px;
+    position:relative;
+  }
+  .field label{
+    display:block;
+    font-size:.88rem;
+    color:var(--muted);
+    margin-bottom:7px;
+    font-weight:600;
+  }
+  .field input, .field select{
+    width:100%;
+    background:#0d0f13;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 16px;
+    color:var(--text);
+    font-family:Tahoma, 'Segoe UI', Arial, sans-serif;
+    font-size:1rem;
+    outline:none;
+    transition:border-color .2s, box-shadow .2s;
+    appearance:none;
+  }
+  .field select{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9' fill='none'%3E%3Cpath d='M1 1L7 7L13 1' stroke='%238a93a3' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:left 16px center;
+    padding-left:38px;
+  }
+  .field input::placeholder{color:#525a68;}
+  .field input:focus, .field select:focus{
+    border-color:var(--blue);
+    box-shadow:0 0 0 3px rgba(30,111,208,.18);
+  }
+  .field input:invalid:not(:placeholder-shown){
+    border-color:var(--red);
+  }
+
+  button.submit{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(95deg, var(--red), #b81e30);
+    color:#fff;
+    font-weight:700;
+    font-size:1.08rem;
+    cursor:pointer;
+    transition:transform .15s, box-shadow .15s, filter .15s;
+    box-shadow:0 14px 30px -10px rgba(224,38,58,.55);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+  }
+  button.submit:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.07);
+  }
+  button.submit:active{
+    transform:translateY(0);
+  }
+  button.submit:focus-visible{
+    outline:3px solid var(--blue);
+    outline-offset:3px;
+  }
+
+  .success{
+    display:none;
+    text-align:center;
+    padding:30px 10px 6px;
+  }
+  .success.show{display:block;}
+  .success .check{
+    width:56px;height:56px;
+    margin:0 auto 16px;
+    border-radius:50%;
+    background:var(--blue-dim);
+    border:1px solid #234a7a;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .success h3{
+    font-size:1.3rem;
+    margin-bottom:8px;
+  }
+  .success p{color:var(--muted);font-size:.95rem;line-height:1.7;}
+
+  footer{
+    text-align:center;
+    margin-top:56px;
+    color:#4d5563;
+    font-size:.85rem;
+  }
+  footer .location-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:10px;
+    color:var(--blue);
+    text-decoration:none;
+    font-size:.92rem;
+    font-weight:600;
+    transition:color .2s;
+  }
+  footer .location-link:hover{
+    color:#4fa3f7;
+    text-decoration:underline;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+
+  @media (max-width:480px){
+    .card{padding:30px 22px 26px;}
+  }
+
+  /* ---- Section heading ---- */
+  .section-head{
+    text-align:center;
+    margin:88px 0 34px;
+  }
+  .section-head .eyebrow{
+    display:inline-block;
+    font-size:.8rem;
+    font-weight:700;
+    letter-spacing:.08em;
+    color:var(--red);
+    background:var(--red-dim);
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  .section-head h2{
+    font-size:clamp(1.6rem, 4vw, 2.2rem);
+    font-weight:800;
+  }
+  .section-head p{
+    margin-top:10px;
+    color:var(--muted);
+    font-size:1rem;
+    max-width:520px;
+    margin-inline:auto;
+    line-height:1.8;
+  }
+
+  /* ---- Maintenance packages ---- */
+  .plans{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:22px;
+    align-items:stretch;
+  }
+  @media (max-width:860px){
+    .plans{grid-template-columns:1fr; max-width:440px; margin-inline:auto;}
+  }
+  .plan{
+    --accent:var(--blue);
+    --accent-dim:var(--blue-dim);
+    position:relative;
+    background:linear-gradient(180deg, var(--surface), var(--surface-2));
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:30px 24px 26px;
+    display:flex;
+    flex-direction:column;
+    transition:transform .25s ease, border-color .25s ease;
+  }
+  .plan::before{
+    content:'';
+    position:absolute;
+    top:-1px;left:12%;right:12%;
+    height:2px;
+    border-radius:2px;
+    background:var(--accent);
+    box-shadow:0 0 16px var(--accent);
+  }
+  .plan:hover{
+    transform:translateY(-4px);
+    border-color:var(--accent);
+  }
+  .plan.plus{--accent:var(--blue); --accent-dim:var(--blue-dim);}
+  .plan.basic{--accent:var(--lime); --accent-dim:var(--lime-dim);}
+  .plan.premium{--accent:var(--gold); --accent-dim:var(--gold-dim);}
+
+  .plan .badge{
+    position:absolute;
+    top:-13px;
+    left:50%;
+    transform:translateX(-50%);
+    background:var(--accent);
+    color:#0a0c10;
+    font-size:.74rem;
+    font-weight:800;
+    padding:5px 14px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .plan .kicker{
+    font-size:.78rem;
+    font-weight:700;
+    color:var(--muted);
+    margin-bottom:4px;
+  }
+  .plan h3{
+    font-size:1.3rem;
+    font-weight:800;
+    margin-bottom:4px;
+  }
+  .plan h3 em{
+    font-style:normal;
+    color:var(--accent);
+  }
+  .plan .tagline{
+    color:var(--muted);
+    font-size:.86rem;
+    margin-bottom:18px;
+    line-height:1.7;
+    min-height:44px;
+  }
+  .plan .includes-note{
+    font-size:.78rem;
+    color:var(--accent);
+    font-weight:700;
+    margin-bottom:10px;
+    padding-bottom:10px;
+    border-bottom:1px dashed var(--line);
+  }
+  .plan ul{
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:11px;
+    margin-bottom:24px;
+    flex:1;
+  }
+  .plan ul li{
+    display:flex;
+    align-items:flex-start;
+    gap:9px;
+    font-size:.88rem;
+    color:var(--silver);
+    line-height:1.5;
+  }
+  .plan ul li svg{
+    flex-shrink:0;
+    margin-top:2px;
+    color:var(--accent);
+  }
+  .plan .choose{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid var(--accent);
+    background:transparent;
+    color:var(--text);
+    font-weight:700;
+    font-size:.92rem;
+    cursor:pointer;
+    transition:background .2s, color .2s;
+  }
+  .plan .choose:hover{
+    background:var(--accent);
+    color:#0a0c10;
+  }
+
+  .brands-strip{
+    margin-top:26px;
+    text-align:center;
+  }
+  .brands-strip p{
+    color:var(--muted);
+    font-size:.82rem;
+    margin-bottom:12px;
+  }
+  .brands-strip .row{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .brands-strip .row span{
+    font-size:.82rem;
+    font-weight:700;
+    color:var(--silver);
+    background:var(--surface);
+    border:1px solid var(--line);
+    padding:7px 16px;
+    border-radius:999px;
+  }
+
+  /* ---- Why us ---- */
+  .why{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:16px;
+  }
+  @media (max-width:760px){
+    .why{grid-template-columns:repeat(2, 1fr);}
+  }
+  .why .item{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 16px;
+    text-align:center;
+  }
+  .why .item .icon{
+    width:40px;height:40px;
+    margin:0 auto 12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:10px;
+    background:var(--blue-dim);
+    color:#7db4f2;
+  }
+  .why .item p{
+    font-size:.86rem;
+    font-weight:700;
+    color:var(--silver);
+  }
+
+  /* ---- WhatsApp floating button ---- */
+  .wa-fab{
+    position:fixed;
+    bottom:22px;
+    left:22px;
+    z-index:30;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#25D366;
+    color:#0a2e1a;
+    padding:13px 20px 13px 16px;
+    border-radius:999px;
+    text-decoration:none;
+    font-weight:800;
+    font-size:.92rem;
+    box-shadow:0 12px 26px -8px rgba(37,211,102,.65);
+    transition:transform .2s ease;
+  }
+  .wa-fab:hover{transform:scale(1.05);}
+  .wa-fab svg{width:26px;height:26px;flex-shrink:0;}
+
+  @media (max-width:480px){
+    .wa-fab{bottom:16px;left:16px;padding:11px 16px 11px 13px;font-size:.85rem;}
+    .wa-fab svg{width:22px;height:22px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="haze"></div>
+<div class="grain"></div>
+
+<div class="wrap">
+
+  <section class="hero">
+    <div class="gauge-rule"></div>
+    <h1 class="headline">ما تشيلش الهم مع RPM</h1>
+    <p class="sub">ميكانيكا، عفشة، سمكرة ودوكو، وتنظيف علبة البيئة — كل خدمات عربيتك في مكان واحد مع <b>RPM Automotive</b>.</p>
+
+    <div class="trust">
+      <span class="pill"><i class="dot"></i> ميكانيكا</span>
+      <span class="pill"><i class="dot"></i> عفشة</span>
+      <span class="pill"><i class="dot"></i> سمكرة ودوكو</span>
+      <span class="pill"><i class="dot"></i> تنظيف علبة البيئة</span>
+    </div>
+  </section>
+
+  <section id="packages">
+    <div class="section-head">
+      <span class="eyebrow">صيانة دورية</span>
+      <h2>اختار الباكدج المناسب لعربيتك</h2>
+      <p>٣ مستويات صيانة مصممة حسب احتياج عربيتك، بأفضل الزيوت والفلاتر العالمية وضمان على الخدمة.</p>
+    </div>
+
+    <div class="plans">
+      <div class="plan basic">
+        <div class="kicker">الباكدج الأساسي</div>
+        <h3>RPM <em>Basic</em></h3>
+        <p class="tagline">صيانة دورية تحافظ على أداء عربيتك بأساسيات شاملة وموثوقة.</p>
+        <ul>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> زيت محرك شبه تخليقي حتى 4 لتر (معتمد API SP)</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> فلتر زيت أصلي WIX</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> تغيير الزيت والفلتر</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> فحص شامل 25 نقطة</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> فحص الفرامل والعفشة</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> فحص البطارية</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> ضبط ضغط الإطارات</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> تزويد جميع السوائل</li>
+        </ul>
+        <button class="choose" data-plan="صيانة دورية - RPM Basic">احجز الباكدج ده</button>
+      </div>
+
+      <div class="plan plus">
+        <span class="badge">الأكثر طلبًا</span>
+        <div class="kicker">الباكدج المتقدم</div>
+        <h3>RPM <em>Plus</em></h3>
+        <p class="tagline">أداء أعلى وحماية أكبر لمحرك عربيتك مع فحص كمبيوتر شامل.</p>
+        <div class="includes-note">يشمل كل خدمات الباكدج الأساسي +</div>
+        <ul>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> زيت محرك Fully Synthetic حتى 4 لتر (معتمد API SP)</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> فلتر هواء</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> فلتر تكييف</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> تنظيف بوابة الهواء</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> كشف كمبيوتر شامل</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Reset Oil Service</li>
+        </ul>
+        <button class="choose" data-plan="صيانة دورية - RPM Plus">احجز الباكدج ده</button>
+      </div>
+
+      <div class="plan premium">
+        <div class="kicker">الباكدج الشامل</div>
+        <h3>RPM <em>Premium</em></h3>
+        <p class="tagline">أداء فائق وحماية شاملة، أولوية في الحجز مع تقرير كامل عن حالة السيارة.</p>
+        <div class="includes-note">يشمل كل خدمات الباكدج المتقدم بالإضافة إلي</div>
+        <ul>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> زيت محرك عالي الأداء (Premium Fully Synthetic) حتى 5 لتر</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> منظف دورة البنزين</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> تنظيف داخلي للمحرك (Engine Flush)</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> تعقيم وتنظيف التكييف</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> فحص أكثر من 50 نقطة</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> تقرير شامل بحالة السيارة</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> أولوية في الحجز والصيانة VIP</li>
+        </ul>
+        <button class="choose" data-plan="صيانة دورية - RPM Premium">احجز الباكدج ده</button>
+      </div>
+    </div>
+
+    <div class="brands-strip">
+      <p>نستخدم أفضل الزيوت والفلاتر العالمية</p>
+      <div class="row">
+        <span>Shell Helix</span>
+        <span>Mobil</span>
+        <span>Total</span>
+        <span>Motul</span>
+        <span>Petromin</span>
+        <span>WIX Filters</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head" style="margin-top:70px;">
+      <span class="eyebrow">ليه RPM</span>
+      <h2>جودة تستحق ثقتك</h2>
+    </div>
+    <div class="why">
+      <div class="item">
+        <div class="icon">👨‍🔧</div>
+        <p>فنيين متخصصين</p>
+      </div>
+      <div class="item">
+        <div class="icon">🖥️</div>
+        <p>أحدث أجهزة الفحص</p>
+      </div>
+      <div class="item">
+        <div class="icon">🛡️</div>
+        <p>ضمان على الخدمة</p>
+      </div>
+      <div class="item">
+        <div class="icon">👍</div>
+        <p>جودة تستحق ثقتك</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="card" id="bookingCard">
+    <div id="formView">
+      <h2>احجز معادك</h2>
+      <p class="note">سجّل بياناتك، واختار الخدمة، وهيتبعت طلبك لينا أوتوماتيك على طول.</p>
+
+      <form id="bookingForm">
+        <div class="field">
+          <label for="name">الاسم</label>
+          <input type="text" id="name" name="name" placeholder="اكتب اسمك بالكامل" required>
+        </div>
+        <div class="field">
+          <label for="phone">رقم التليفون</label>
+          <input type="tel" id="phone" name="phone" placeholder="01xxxxxxxxx" pattern="^01[0-9]{9}$" required>
+        </div>
+        <div class="field">
+          <label for="carType">نوع العربية</label>
+          <input type="text" id="carType" name="carType" placeholder="مثال: هيونداي النترا 2019" required>
+        </div>
+        <div class="field">
+          <label for="service">نوع الخدمة</label>
+          <select id="service" name="service" required>
+            <option value="" disabled selected>اختار الخدمة</option>
+            <option value="صيانة دورية - RPM Basic">صيانة دورية - RPM Basic</option>
+            <option value="صيانة دورية - RPM Plus">صيانة دورية - RPM Plus</option>
+            <option value="صيانة دورية - RPM Premium">صيانة دورية - RPM Premium</option>
+            <option value="ميكانيكا">ميكانيكا</option>
+            <option value="عفشة">عفشة</option>
+            <option value="سمكرة ودوكو">سمكرة ودوكو</option>
+            <option value="تنظيف علبة البيئة">تنظيف علبة البيئة</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="date">تاريخ المعاد المفضل</label>
+          <input type="date" id="date" name="date" required>
+        </div>
+        <button type="submit" class="submit" id="submitBtn">
+          تأكيد الحجز
+        </button>
+      </form>
+    </div>
+
+    <div class="success" id="successView">
+      <div class="check">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M5 13l4 4L19 7" stroke="#1e6fd0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3>تم استلام طلبك</h3>
+      <p>طلبك وصلنا أوتوماتيك، وهيتواصل معاك فريقنا قريبًا لتأكيد المعاد.</p>
+    </div>
+  </div>
+
+  <footer>
+    RPM Automotive Service Center — امتداد المريوطية هرم، شارع الفاروق
+    <br>
+    <a class="location-link" href="tel:01555066888">📞 01555066888</a>
+    &nbsp; · &nbsp;
+    <a class="location-link" href="https://maps.app.goo.gl/7E9aLru4wEcP3L3S6?g_st=ic" target="_blank" rel="noopener">
+      📍 شوف موقعنا على جوجل ماب
+    </a>
+  </footer>
+
+</div>
+
+<a class="wa-fab" href="https://wa.me/201555066888" target="_blank" rel="noopener" aria-label="تواصل معانا على واتساب">
+  <svg viewBox="0 0 32 32" fill="#0a2e1a"><path d="M16 3C9.373 3 4 8.373 4 15c0 2.53.783 4.877 2.117 6.81L4.5 28l6.36-1.567A11.93 11.93 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm0 21.8a9.76 9.76 0 0 1-4.98-1.37l-.357-.212-3.775.93 1.006-3.68-.234-.378A9.77 9.77 0 0 1 6.2 15c0-5.404 4.396-9.8 9.8-9.8s9.8 4.396 9.8 9.8-4.396 9.8-9.8 9.8zm5.36-7.34c-.294-.147-1.74-.858-2.01-.956-.27-.098-.467-.147-.663.147-.196.294-.76.956-.932 1.152-.172.196-.343.221-.637.074-.294-.147-1.24-.457-2.362-1.457-.873-.779-1.463-1.741-1.635-2.035-.172-.294-.018-.453.129-.6.132-.132.294-.343.441-.514.147-.172.196-.294.294-.49.098-.196.049-.368-.024-.514-.074-.147-.663-1.598-.909-2.188-.24-.575-.484-.497-.663-.507l-.564-.01c-.196 0-.514.074-.784.368-.27.294-1.03 1.006-1.03 2.454 0 1.447 1.054 2.846 1.201 3.042.147.196 2.075 3.166 5.027 4.44.702.303 1.25.484 1.677.62.705.224 1.346.192 1.853.117.565-.084 1.74-.712 1.985-1.4.245-.688.245-1.278.172-1.4-.074-.123-.27-.196-.564-.343z"/></svg>
+  تواصل معنا
+</a>
+
+<script>
+  var FORM_ENDPOINT = "https://formspree.io/f/xnjkaoez";
+
+  var form = document.getElementById('bookingForm');
+  var formView = document.getElementById('formView');
+  var successView = document.getElementById('successView');
+  var submitBtn = document.getElementById('submitBtn');
+  var dateInput = document.getElementById('date');
+
+  var today = new Date().toISOString().split('T')[0];
+  dateInput.setAttribute('min', today);
+
+  var serviceSelect = document.getElementById('service');
+  var planButtons = document.querySelectorAll('.plan .choose');
+  planButtons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      serviceSelect.value = btn.getAttribute('data-plan');
+      document.getElementById('bookingCard').scrollIntoView({behavior:'smooth', block:'start'});
+      var nameInput = document.getElementById('name');
+      setTimeout(function(){ nameInput.focus(); }, 450);
+    });
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "بنبعت طلبك...";
+
+    var formData = new FormData(form);
+    formData.append('_subject', 'حجز جديد من موقع RPM Automotive');
+
+    fetch(FORM_ENDPOINT, {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    }).then(function(res){
+      if(res.ok){
+        formView.style.display = 'none';
+        successView.classList.add('show');
+      } else {
+        throw new Error('submit failed');
+      }
+    }).catch(function(err){
+      submitBtn.disabled = false;
+      submitBtn.textContent = "تأكيد الحجز";
+      alert('حصل خطأ في إرسال الطلب، جرب تاني أو تواصل معانا مباشرة.');
+    });
+  });
+</script>
+
+</body>
+</html>
